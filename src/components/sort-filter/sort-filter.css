@@ -1,0 +1,43 @@
+@keyframes sortbtnhover {
+    from {
+        background-color: #fff;
+        color: #fff;
+    }
+    to {
+        background-color: rgba(33, 150, 243, 1);
+        color: #fff;
+    }
+}
+.sortFilter__btn {
+    width: 168px;
+    height: 50px;
+    border: 1px solid rgba(223, 229, 236, 1);
+    background-color: #fff;
+    font-size: 12px;
+    font-family: inherit;
+}
+.sortFilter {
+    display: inline-block;
+    border-radius: 15px;
+}
+.sortFilter__btn:hover {
+    animation: sortbtnhover 2s;
+    background-color: rgba(33, 150, 243, 1);
+    color: #fff;
+    cursor: pointer;
+    
+}
+.sortFilter__btn.selected {
+    background-color: rgba(33, 150, 243, 1);
+    color: #fff;
+}
+
+.sortFilter__btn:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.sortFilter__btn:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
