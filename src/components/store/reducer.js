@@ -46,7 +46,29 @@ const reducer = (state = initialState, action) => {
             })
         case "SET_TICKETS":
             return Object.assign({}, state, {
-                tickets: action.tickets.splice(0, 5)
+                tickets: [...action.tickets].sort((a, b) => a.price - b.price)
+            })
+        case "SET_FASTEST_TICKETS":
+            return Object.assign({}, state, {
+                tickets: [...state.tickets].sort((prevElement, nextElement) => {
+                    const durationPrev = prevElement.segments[0].duration + prevElement.segments[1].duration;
+                    const durationNext = nextElement.segments[0].duration + nextElement.segments[1].duration;
+                    return durationPrev - durationNext;
+                })
+            })
+        case "SET_LOWEST_TICKETS":
+            return Object.assign({}, state, {
+                tickets: [...state.tickets].sort((a, b) => a.price - b.price)
+            })
+        case "SET_OPTIMAL_TICKETS":
+            return Object.assign({}, state, {
+                tickets: [...state.tickets].sort((prevElement, nextElement) => {
+                    const durationPrev = prevElement.segments[0].duration + prevElement.segments[1].duration;
+                    const durationNext = nextElement.segments[0].duration + nextElement.segments[1].duration;
+                    const optValuePrev = prevElement.price / 10 + durationPrev;
+                    const optValueNext = nextElement.price / 10 + durationNext;
+                    return optValuePrev - optValueNext;
+                })
             })
         default:
             return state
@@ -56,10 +78,15 @@ const reducer = (state = initialState, action) => {
 getTickets()
 
 async function getTickets() {
-    const {searchId} = await (await fetch('https://aviasales-test-api.kata.academy/search')).json()
-    const response = await (await fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`, { method: 'GET' })).json()
-    const {tickets} = await response
-    store.dispatch({ type: 'SET_TICKETS', tickets })
+    try {
+        const {searchId} = await (await fetch('https://aviasales-test-api.kata.academy/search')).json()
+        let response = await (await fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`, { method: 'GET' })).json()
+        const {tickets} = await response
+        store.dispatch({ type: 'SET_TICKETS', tickets })
+    } catch (e) {
+        console.log(e)
+    }
+
 }
 
 
